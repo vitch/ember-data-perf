@@ -8,6 +8,7 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('home', { path: '/' });
   this.route('rest');
+  this.route('jsonapi');
 });
 
 export default Router;

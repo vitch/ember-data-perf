@@ -1,9 +1,9 @@
 var faker = require('faker');
 var fs = require('fs');
 
-var numUsers = 100;
-var numPosts = 1000;
-var maxCommentsPerPost = 10;
+var numUsers = 200;
+var numPosts = 2000;
+var maxCommentsPerPost = 20;
 
 users = [];
 authors = [];
@@ -51,7 +51,7 @@ for (var i=0; i<numPosts; i++) {
 var jsonApiData = {
 	data: {
 		id: 1,
-		type: 'sync'
+		type: 'json-sync'
 	},
 	included: []
 };
@@ -73,22 +73,22 @@ jsonApiData.included = jsonApiData.included.concat(
 				isAuthor: user.isAuthor
 			},
 			relationships: {
-				posts: postsForUser.map(function(post) {
-					return {
-						data: {
-							type: 'json-post',
-							id: post.id
-						}
-					}
-				}),
-				comments: commentsForUser.map(function(comment) {
-					return {
-						data: {
-							type: 'json-comment',
-							id: comment.id
-						}
-					}
-				})
+				posts: {
+          data: postsForUser.map(function(post) {
+            return {
+              type: 'json-post',
+              id: post.id
+            }
+          })
+        },
+				comments: {
+          data: commentsForUser.map(function(comment) {
+            return {
+              type: 'json-comment',
+              id: comment.id
+            }
+          })
+        }
 			}
 		};
 	}),
@@ -104,14 +104,14 @@ jsonApiData.included = jsonApiData.included.concat(
 				content: post.content
 			},
 			relationships: {
-				comments: commentsForPost.map(function(comment) {
-					return {
-						data: {
-							type: 'json-comment',
-							id: comment.id
-						}
-					}
-				})
+				comments: {
+          data: commentsForPost.map(function(comment) {
+            return {
+              type: 'json-comment',
+              id: comment.id
+            }
+          })
+        }
 			}
 		};
 	}),
