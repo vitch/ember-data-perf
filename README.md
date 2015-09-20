@@ -1,7 +1,34 @@
-# Data-perf
+# ember-data performance test
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This demo shows a problem I am having with JSON-API responses and ember-data 2.
+
+In my app I need to side-load thousands of records with relationships at 
+application startup (to support offline scenarios). I noticed a big slowdown
+when I converted my API to use ember-data 2 with data in a JSON-API format.
+
+This repository contains my work to reproduce the problem. I wrote a simple script
+to generate some test date (users, posts and comments from an immaginary blog) with
+relationships between them. The data is available in a format which suits the 
+"old" `RESTAPI` adapters/serializers and in a format which suits the new `JSON-API`
+adapters/ serializers.
+
+On my laptop I get the following results with the code in this branch (built 
+in production mode running in a clean browser tab without developer tools):
+
+ * Loading JSON-API based data: ~7100 milliseconds
+ * Loading REST API based data: ~3400 milliseconds
+
+Interestingly the results were different pre 
+[5806214](https://github.com/vitch/ember-data-perf/commit/5806214939e32651c14ae99ed7e674b7d55bd911) 
+(when I defined the posts and comments on a user rather than specifying the author 
+on posts/ comments):
+
+ * Loading JSON-API based data: ~1200 milliseconds
+ * Loading REST API based data: ~3400 milliseconds
+
+I'm interested in whether this is a known phenomenon and whether there is any information
+on the best way to structure your data to get the best performance from ember-data. Or should
+ember-data be clever enough to behave performantly in any situation?
 
 ## Prerequisites
 
