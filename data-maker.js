@@ -30,7 +30,7 @@ if (authors.length === 0) {
 for (var i=0; i<numPosts; i++) {
 	var post = {
 		id: i + 1,
-		authorId: authors[faker.random.number(authors.length - 1)].id,
+		author: authors[faker.random.number(authors.length - 1)].id,
 		title: faker.lorem.sentence(),
 		content: faker.lorem.paragraphs(10)
 	};
@@ -39,8 +39,8 @@ for (var i=0; i<numPosts; i++) {
 	for (var j=0; j<faker.random.number(maxCommentsPerPost); j++) {
 		var comment = {
 			id: (i * numPosts) + j + 1,
-			authorId: users[faker.random.number(users.length - 1)].id,
-			postId: post.id,
+			author: users[faker.random.number(users.length - 1)].id,
+			post: post.id,
 			text: faker.lorem.paragraphs()
 		};
 		comments.push(comment);
@@ -60,10 +60,10 @@ var jsonApiData = {
 jsonApiData.included = jsonApiData.included.concat(
 	users.map(function(user) {
 		var postsForUser = posts.filter(function(post) {
-			return post.authorId === user.id;
+			return post.author === user.id;
 		});
 		var commentsForUser = comments.filter(function(comment) {
-			return comment.authorId === user.id;
+			return comment.author === user.id;
 		});
 		return {
 			type: 'json-user',
@@ -94,7 +94,7 @@ jsonApiData.included = jsonApiData.included.concat(
 	}),
 	posts.map(function(post) {
 		var commentsForPost = comments.filter(function(comment) {
-			return comment.postId === post.id;
+			return comment.post === post.id;
 		});
 		return {
 			type: 'json-post',
@@ -131,9 +131,9 @@ jsonApiData.included = jsonApiData.included.concat(
 
 
 fs.writeFileSync('public/blog-rest.json', JSON.stringify({
-	users: users,
-	posts: posts,
-	comments: comments
+	user: users,
+	post: posts,
+	comment: comments
 }, null, 2));
 
 
