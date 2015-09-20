@@ -73,22 +73,6 @@ jsonApiData.included = jsonApiData.included.concat(
 				isAuthor: user.isAuthor
 			},
 			relationships: {
-				posts: {
-          data: postsForUser.map(function(post) {
-            return {
-              type: 'json-post',
-              id: post.id
-            }
-          })
-        },
-				comments: {
-          data: commentsForUser.map(function(comment) {
-            return {
-              type: 'json-comment',
-              id: comment.id
-            }
-          })
-        }
 			}
 		};
 	}),
@@ -104,13 +88,11 @@ jsonApiData.included = jsonApiData.included.concat(
 				content: post.content
 			},
 			relationships: {
-				comments: {
-          data: commentsForPost.map(function(comment) {
-            return {
-              type: 'json-comment',
-              id: comment.id
-            }
-          })
+        author: {
+          data: {
+            type: 'json-user',
+            id: post.author
+          }
         }
 			}
 		};
@@ -123,6 +105,18 @@ jsonApiData.included = jsonApiData.included.concat(
 				text: comment.text,
 			},
 			relationships: {
+        author: {
+          data: {
+            type: 'json-user',
+            id: comment.author
+          }
+        },
+        post: {
+          data: {
+            type: 'json-post',
+            id: comment.post
+          }
+        }
 			}
 		};
 	})
