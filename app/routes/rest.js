@@ -6,7 +6,9 @@ export default Ember.Route.extend({
     return window.$.ajax('blog-rest.json').then(function(data) {
       const startTime = Date.now();
       Object.keys(data).forEach(function(type) {
-        store.pushPayload(type, data);
+        let thisData = {};
+        thisData[type] = data[type];
+        store.pushPayload(type, thisData);
       });
       return {
         timeTaken: Date.now() - startTime
