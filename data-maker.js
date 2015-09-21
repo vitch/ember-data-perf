@@ -73,6 +73,22 @@ jsonApiData.included = jsonApiData.included.concat(
 				isAuthor: user.isAuthor
 			},
 			relationships: {
+        posts: {
+          data: postsForUser.map(function(post) {
+            return {
+              type: 'json-post',
+              id: post.id
+            }
+          })
+        },
+        comments: {
+          data: commentsForUser.map(function(comment) {
+            return {
+              type: 'json-comment',
+              id: comment.id
+            }
+          })
+        }
 			}
 		};
 	}),
